@@ -1,0 +1,236 @@
+echo -n Trincomalee|sha1sum = using hash
+echo "hello"|openssl enc -base64 = encrypt
+echo "djdndksn ="|openssl enc -base64 -d
+
+echo 'hello bye bye 020' >a.txt = create text file.
+
+DES
+openssl enc -des -in a.txt -out ct.enc -provider legacy -provider default  = encrypt des and create encrypt password
+decrypt= 
+cat ct.enc
+openssl enc -d -des -in ct.enc -out org.txt -provider legacy -provider default 
+cat org.txt
+
+3DES
+openssl enc -des3 -salt -in awt.txt -out ct.txt -provider legacy -provider default = encrypt
+openssl enc -d -des3 -in ct.txt -out org.txt 
+
+AES Image
+enc -aes-256-cbc -in a.png -out pic.png  = encrypt
+openssl enc -d -aes-256-cbc -in pic.png -out she.png = decrypt
+
+AES Text
+openssl enc -aes-256-cbc -in a.txt -out cht.enc  = encrypt
+openssl enc -d -aes-256-cbc -in cht.enc -out che.enc = decrypt
+
+RSA File
+openssl genrsa -out private.pem
+openssl rsa -in private.pem -out public.pem 
+openssl pkeyutl -encrypt -inkey public.pem -in awt.txt -out chp.enc = encrypt
+openssl pkeyutl -decrypt -inkey private.pem -in chp.enc -out org.txt = decrypt
+
+
+
+
+RailFenceCipherDecryption
+
+import java.util.Scanner;  
+public class RailFenceCipherDecryption {  
+    // Function to decrypt the Rail Fence Cipher  
+    public static String decrypt(String encryptedMessage, int rails) {  
+        // Create a 2D array to represent the rail fence  
+        char[][] railFence = new char[rails][encryptedMessage.length()];          
+        // Initialize the rail fence with dots  
+        for (int i = 0; i < rails; i++) {  
+            for (int j = 0; j < encryptedMessage.length(); j++) {  
+                railFence[i][j] = '.';  
+            }  
+        }          
+        // Fill in the characters in a zigzag pattern  
+        int row = 0;  
+        boolean down = true;  
+        for (int i = 0; i < encryptedMessage.length(); i++) {  
+            railFence[row][i] = 'X'; // Mark the position of the characters  
+            if (row == 0) {  
+                down = true;  
+            } else if (row == rails - 1) {  
+                down = false;  
+            }  
+            if (down) {  
+                row++;  
+            } else {  
+                row--;  
+            }  
+        }          
+        // Read the characters in the zigzag pattern to recover the original message  
+        int index = 0;  
+        for (int i = 0; i < rails; i++) {  
+            for (int j = 0; j < encryptedMessage.length(); j++) {  
+                if (railFence[i][j] == 'X') {  
+                    railFence[i][j] = encryptedMessage.charAt(index++);  
+                }  
+            }  
+        }       
+        // Read the characters row by row to get the decrypted message  
+        StringBuilder decryptedMessage = new StringBuilder();  
+        row = 0;  
+        down = true;  
+        for (int i = 0; i < encryptedMessage.length(); i++) {  
+            decryptedMessage.append(railFence[row][i]);  
+            if (row == 0) {  
+                down = true;  
+            } else if (row == rails - 1) {  
+                down = false;  
+            }  
+            if (down) {  
+                row++;  
+            } else {  
+                row--;  
+            }  
+        }  
+        return decryptedMessage.toString();  
+    }  
+    public static void main(String[] args) {  
+        Scanner scanner = new Scanner(System.in);  
+        System.out.print("Enter the encrypted message: ");  
+        String encryptedMessage = scanner.nextLine();  
+        System.out.print("Enter the number of rails: ");  
+        int rails = scanner.nextInt();  
+        // Decrypt the message  
+        String decryptedMessage = decrypt(encryptedMessage, rails);          
+        // Display the decrypted message  
+        System.out.println("Decrypted message: " + decryptedMessage);  
+    }  
+}  
+
+RailFenceCipherEncryption
+
+import java.util.Scanner;  
+public class RailFenceCipherEncryption {  
+    // Function to encrypt a message using the Rail Fence Cipher  
+    public static String encrypt(String message, int rails) {  
+        // Create a 2D array to represent the rail fence  
+        char[][] railFence = new char[rails][message.length()];          
+        // Initialize the rail fence with dots  
+        for (int i = 0; i < rails; i++) {  
+            for (int j = 0; j < message.length(); j++) {  
+                railFence[i][j] = '.';  
+            }  
+        }  
+        // Fill in the characters in a zigzag pattern  
+        int row = 0;  
+        boolean down = true;  
+        for (int i = 0; i < message.length(); i++) {  
+            railFence[row][i] = message.charAt(i);  
+            if (row == 0) {  
+                down = true;  
+            } else if (row == rails - 1) {  
+                down = false;  
+            }  
+            if (down) {  
+                row++;  
+            } else {  
+                row--;  
+            }  
+        }          
+        // Read the characters row by row to get the encrypted message  
+        StringBuilder encryptedMessage = new StringBuilder();  
+        for (int i = 0; i < rails; i++) {  
+            for (int j = 0; j < message.length(); j++) {  
+                if (railFence[i][j] != '.') {  
+                    encryptedMessage.append(railFence[i][j]);  
+                }  
+            }  
+        }         
+        return encryptedMessage.toString();  
+    }  
+    public static void main(String[] args) {  
+        Scanner scanner = new Scanner(System.in);  
+        System.out.print("Enter the message to encrypt: ");  
+        String message = scanner.nextLine();  
+        System.out.print("Enter the number of rails: ");  
+        int rails = scanner.nextInt();  
+        // Encrypt the message  
+        String encryptedMessage = encrypt(message, rails);          
+        // Display the encrypted message  
+        System.out.println("Encrypted message: " + encryptedMessage);  
+    }  
+}
+
+
+
+CaesarCipher
+
+import java.util.*; // Encryption and Decryption methods
+public class CaesarCipher
+{
+	String readtext;
+	char Arraytext[];
+	char alphbet[]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+	
+	int key,k; // give integer value as the key
+	static Scanner s=new Scanner(System.in);
+	
+	public CaesarCipher()
+	
+	{
+		System.out.print("Enter your text:");
+		readtext=s.next();
+		System.out.print("Enter your key:");
+		key=s.nextInt();
+		readtext=readtext.toUpperCase();
+		Arraytext=readtext.toCharArray();
+	}
+	public void Encript()// Encryption method
+	{
+		// for (int i=0; i< readtext.length;i++){
+		// System.out.println(readtext[i];) }
+		for (int i=0; i<Arraytext.length;i++)
+		{
+			for (int j=0; j<alphbet.length;j++)
+			{
+				if(Arraytext[i]==alphbet[j])
+				{
+					k=(j+key)%26;
+				}
+				
+			}
+			System.out.print(alphbet[k]);
+		}
+	}
+	public void Decript()// Decryption method
+	{
+		
+		for (int i=0; i<Arraytext.length;i++)
+		{
+			for (int j=0; j<alphbet.length;j++)
+			{
+				if(Arraytext[i]==alphbet[j])
+				{
+					k=(j-key+26)%26;
+				}
+				
+			}
+			System.out.print(alphbet[k]);
+		}
+	}
+	public static void main(String[]args)
+	{
+		CaesarCipher c=new CaesarCipher();
+		System.out.print("Do you want Encript(1) or Decript(0)? .....(1/0):");
+		int choose=s.nextInt();
+		if(choose==1)
+		
+			c.Encript();
+		
+		
+		else
+			
+			c.Decript();
+		
+	}
+}
+
+	
+	
+	
